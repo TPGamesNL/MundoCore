@@ -87,9 +87,6 @@ class MundoCoreGradlePlugin implements Plugin<Project> {
                 extension.permission target.name.toLowerCase()
             }
             target.repositories {
-                if (extension.bStatsVersion != null) {
-                    maven { url = 'https://repo.bstats.org/content/repositories/releases'}
-                }
                 if (extension.protocolLibVersion != null) {
                     maven { url = 'http://repo.dmulloy2.net/nexus/repository/public/'}
                 }
