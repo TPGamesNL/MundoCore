@@ -86,6 +86,9 @@ class MundoCoreGradlePlugin implements Plugin<Project> {
             if (extension.permission == null) {
                 extension.permission target.name.toLowerCase()
             }
+            if (extension.apiVersion == null) {
+                extension.apiVersion '1.13'
+            }
             target.repositories {
                 if (extension.protocolLibVersion != null) {
                     maven { url = 'http://repo.dmulloy2.net/nexus/repository/public/'}
@@ -163,91 +166,13 @@ class MundoCoreGradlePlugin implements Plugin<Project> {
                         setDefault('OP')
                     }
                 }
-                if (extension.spigotVersion.contains('1.13')) {
-                    apiVersion = '1.13'
-                }
+                apiVersion = extension.apiVersion
             }
 
             target.publishing {
                 publications {
                     MavenJava(MavenPublication) { publication ->
                         target.shadow.component(publication)
-                    }
-                }
-
-                repositories {
-                    maven {
-                        name 'PersonalRepo'
-                        url extension.personalRepo
-                    }
-                }
-            }
-
-            if (target.group == 'us.tlatoani' && extension.mundoServerIdentity != null) {
-                target.remotes {
-                    mundoServer {
-                        host = 'tlatoani.us'
-                        user = 'ubuntu'
-                        identity = target.file(extension.mundoServerIdentity)
-                    }
-                }
-
-                target.task('createMundoServerJSONFile').doLast {
-                    target.file('build/mundo_server').mkdirs()
-                    File jsonFile = target.file('build/mundo_server/addon.json')
-                    jsonFile.text = '{"capitalizedName":"' + target.name + '"}'
-                }
-
-                target.task('createVersionSummaryFile').doLast {
-                    target.file('build/mundo_server').mkdirs()
-                    File summaryFile = target.file('build/mundo_server/version_summary.txt')
-                    summaryFile.text = extension.versionSummary
-                }
-
-                target.task([dependsOn: 'createMundoServerJSONFile'], 'releaseMundoServerJSONFile').doLast {
-                    target.ssh.run {
-                        session(target.remotes.mundoServer) {
-                            execute 'mkdir -p mundo_server/addons/' + target.name.toLowerCase()
-                            put from: target.file('build/mundo_server/addon.json').toString(), into: 'mundo_server/addons/' + target.name.toLowerCase() + '/addon.json'
-                            execute 'tmux send-keys -t mundo_server \'' + target.name.toLowerCase() + ' reload jsonfile\' Enter'
-                        }
-                    }
-                }
-
-                target.task([dependsOn: ['build', 'releaseMundoServerJSONFile']], 'releaseSnapshot').doLast {
-                    target.ssh.run {
-                        session(target.remotes.mundoServer) {
-                            put from: target.shadowJar.destinationDir.toString() + '/' + target.shadowJar.archiveName, into: 'mundo_server/addons/' + target.name.toLowerCase() + '/snapshot.jar'
-                            execute 'tmux send-keys -t mundo_server \'' + target.name.toLowerCase() + ' release snapshot ' + target.version + '\' Enter'
-                        }
-                    }
-                }
-
-                target.task([dependsOn: ['build', 'releaseMundoServerJSONFile', 'createVersionSummaryFile', 'publishMavenJavaPublicationToPersonalRepoRepository']], 'releaseBeta').doLast {
-                    target.file('build/mundo_server').mkdirs()
-                    File jsonFile = target.file('build/mundo_server/version.json')
-                    jsonFile.text = '{"version_string":"' + target.version + '","stage":"beta","location":"maven","release_time":' + System.currentTimeMillis() + '}'
-                    target.ssh.run {
-                        session(target.remotes.mundoServer) {
-                            execute 'mkdir -p mundo_server/addons/' + target.name.toLowerCase() + '/versions/' + target.version.toString().toLowerCase()
-                            put from: target.file('build/mundo_server/version.json').toString(), into: 'mundo_server/addons/' + target.name.toLowerCase() + '/versions/' + target.version.toString().toLowerCase() + '/version.json'
-                            put from: target.file('build/mundo_server/version_summary.txt').toString(), into: 'mundo_server/addons/' + target.name.toLowerCase() + '/versions/' + target.version.toString().toLowerCase() + '/summary.txt'
-                            execute 'tmux send-keys -t mundo_server \'' + target.name.toLowerCase() + ' release beta ' + target.version + '\' Enter'
-                        }
-                    }
-                }
-
-                target.task([dependsOn: ['build', 'releaseMundoServerJSONFile', 'createVersionSummaryFile', 'publishMavenJavaPublicationToPersonalRepoRepository']], 'releaseStable').doLast {
-                    target.file('build/mundo_server').mkdirs()
-                    File jsonFile = target.file('build/mundo_server/version.json')
-                    jsonFile.text = '{"version_string":"' + target.version + '","stage":"stable","location":"maven","release_time":' + System.currentTimeMillis() + '}'
-                    target.ssh.run {
-                        session(target.remotes.mundoServer) {
-                            execute 'mkdir -p mundo_server/addons/' + target.name.toLowerCase() + '/versions/' + target.version.toString().toLowerCase()
-                            put from: target.file('build/mundo_server/version.json').toString(), into: 'mundo_server/addons/' + target.name.toLowerCase() + '/versions/' + target.version.toString().toLowerCase() + '/version.json'
-                            put from: target.file('build/mundo_server/version_summary.txt').toString(), into: 'mundo_server/addons/' + target.name.toLowerCase() + '/versions/' + target.version.toString().toLowerCase() + '/summary.txt'
-                            execute 'tmux send-keys -t mundo_server \'' + target.name.toLowerCase() + ' release stable ' + target.version + '\' Enter'
-                        }
                     }
                 }
             }

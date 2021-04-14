@@ -8,14 +8,13 @@ class MundoExtension {
     String permission
     String mainPackage
     String mainClass
+    String apiVersion
     String[] depend = ['Skript']
     String[] coreModules = []
     String spigotVersion
     String skriptVersion
     String protocolLibVersion
     String bStatsVersion
-    String personalRepo
-    String mundoServerIdentity
 
     void versionSummary(String summary) {
         versionSummary = summary
@@ -47,6 +46,10 @@ class MundoExtension {
 
     void mainClass(String mainClass) {
         this.mainClass = mainClass
+    }
+
+    void apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion
     }
 
     void depend(String dependencies) {
@@ -83,13 +86,5 @@ class MundoExtension {
 
     void bStats(String version) {
         bStatsVersion = version
-    }
-
-    void personalRepo(String personalRepo) {
-        this.personalRepo = personalRepo
-    }
-
-    void mundoServerIdentity(String identity) {
-        mundoServerIdentity = identity
     }
 }

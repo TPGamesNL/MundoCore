@@ -54,11 +54,4 @@ publishing {
             from components.java
         }
     }
-
-    repositories {
-        maven {
-            name 'TlatoaniRepo'
-            url '../../maven_repo'
-        }
-    }
 }

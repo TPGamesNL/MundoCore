@@ -48,12 +48,5 @@ Created to contain MundoSK code that was used in multiple, unrelated categories 
                 from components.java
             }
         }
-        
-        repositories {
-            maven {
-                name 'TlatoaniRepo'
-                url '../../maven_repo'
-            }
-        }
     }
 }
