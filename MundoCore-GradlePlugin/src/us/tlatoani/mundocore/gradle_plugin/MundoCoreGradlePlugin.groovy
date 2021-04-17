@@ -35,7 +35,7 @@ class MundoCoreGradlePlugin implements Plugin<Project> {
             maven { url 'https://repo.destroystokyo.com/repository/maven-public/' }
 
             // WorldGuard (jesus djrist)
-            maven { url 'http://maven.sk89q.com/repo/' }
+            maven { url 'https://maven.sk89q.com/repo/' }
 
             // bStats
             maven { url 'https://repo.codemc.org/repository/maven-public' }
@@ -91,7 +91,7 @@ class MundoCoreGradlePlugin implements Plugin<Project> {
             }
             target.repositories {
                 if (extension.protocolLibVersion != null) {
-                    maven { url = 'http://repo.dmulloy2.net/nexus/repository/public/'}
+                    maven { url = 'https://repo.dmulloy2.net/nexus/repository/public/'}
                 }
             }
 

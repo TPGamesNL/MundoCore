@@ -13,13 +13,13 @@ Created to contain MundoSK code that was used in multiple, unrelated categories 
     repositories {
         mavenCentral()
 
-        //Spigot
-        maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        // Spigot
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
 
-        //Bungeecord ChatComponent-API (depended on by Spigot)
-        maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+        // Bungeecord ChatComponent-API (depended on by Spigot)
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 
-        //Skript
+        // Skript
         maven { url 'http://maven.njol.ch/repo/' }
     }
 
