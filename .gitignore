@@ -1,0 +1,16 @@
+/.idea/
+/build/
+/MundoCore-Base/build/
+/MundoCore-BaseEvent/build/
+/MundoCore-Condition/build/
+/MundoCore-Enum/build/
+/MundoCore-EventScope/build/
+/MundoCore-GradlePlugin/build/
+/MundoCore-GroupedList/build/
+/MundoCore-PropertyExpression/build/
+/MundoCore-Reflection/build/
+/MundoCore-ReflectiveRegistration/build/
+/MundoCore-Registration/build/
+/MundoCore-Scope/build/
+/MundoCore-Updating/build/
+/MundoCore-Util/build/
